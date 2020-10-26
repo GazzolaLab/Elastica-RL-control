@@ -1,0 +1,8 @@
+Pyelastica
+numpy
+scipy
+matplotlib
+tqdm
+numba
+ffmpeg
+stable-baselines
