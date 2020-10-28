@@ -1,0 +1,12 @@
+0 -- straight on low
+ 	#declare Camera_Position = <-00.00, 20.00, -50.00> ;  // Topside view
+
+1 -- overhead
+ 	#declare Camera_Position = <-00.00, 50.00, -00.00> ;  // Topside view
+
+2 -- sideways
+    #declare Camera_Position = <50.00, 10.00, -00.00> ;  // Topside view
+
+3 -- straight on high
+    #declare Camera_Position = <-00.00, 50.00, -50.00> ;  // Topside view
+
