@@ -2,8 +2,9 @@
 
 This repo provides supplementary code and benchmark data for the paper: [*Elastica: A compliant mechanics environment for soft robotic control*](https://arxiv.org/abs/2009.08422).
 
-[Elastica](https://github.com/GazzolaLab/PyElastica) is a simulation environment for simulating assemblies of one-dimensional soft, slender structures using Cosserat rod theory. You can install the Python version of Elastica via `pip install pyelastica.` In this repo, Elastica is interfaced with [Stable Baselines](https://github.com/hill-a/stable-baselines) to investigate how RL can dynamically control a compliant robotic arm. You can install Stable Baselines via `pip install stable-baselines[mpi]` (note: Stable Baselines only works with TesorFlow <= v1.15).
+[Elastica](https://github.com/GazzolaLab/PyElastica) is a simulation environment for simulating assemblies of one-dimensional soft, slender structures using Cosserat rod theory. More information about Elastica is available on the [project website](https://cosseratrods.org). You can install the Python version of Elastica via `pip install pyelastica.` 
 
+In this repo, Elastica is interfaced with [Stable Baselines](https://github.com/hill-a/stable-baselines) to investigate how RL can dynamically control a compliant robotic arm. You can install Stable Baselines via `pip install stable-baselines[mpi]` (note: Stable Baselines only works with TesorFlow <= v1.15).
 Five different RL model-free algorithms from the Stable Baselines implementations are used. Two of them are on-policy algorithms: Trust Region Policy Optimization (TRPO) and Proximal Policy Optimization (PPO) and three of them are off-policy algorithms: Soft Actor Critic (SAC), Deep Deterministic Policy Gradient (DDPG), and Twin Delayed DDPG (TD3). Four different cases are considered with detailed explanations given in the paper. 
 
 If you discover any bugs, please open an issue and let us know. We plan to actively maintain and develop these benchmark cases. 
