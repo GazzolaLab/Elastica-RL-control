@@ -4,17 +4,11 @@ import os
 import numpy as np
 import sys
 
-sys.path.append("../")
-
 import argparse
 import ast
 
 import matplotlib
-
-matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-
-plt.rcParams["animation.ffmpeg_path"] = "/usr/local/bin/ffmpeg"
 
 # Import stable baseline
 from stable_baselines.bench.monitor import Monitor, load_results

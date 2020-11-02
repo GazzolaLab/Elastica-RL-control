@@ -9,9 +9,6 @@ from gym import spaces
 
 import copy
 import sys
-
-sys.path.append("../")
-
 from post_processing import plot_video_with_sphere, plot_video_with_sphere_2D
 
 from MuscleTorquesWithBspline.BsplineMuscleTorques import (
@@ -259,7 +256,7 @@ class Environment(gym.Env):
             )
             self.action = np.zeros(3 * self.number_of_control_points)
 
-        self.obs_state_points = 5
+        self.obs_state_points = 10
         num_points = int(n_elem / self.obs_state_points)
         num_rod_state = len(np.ones(n_elem + 1)[0::num_points])
 
@@ -268,7 +265,7 @@ class Environment(gym.Env):
         self.observation_space = spaces.Box(
             low=-np.inf,
             high=np.inf,
-            shape=(num_rod_state * 3 + 8 + 11 - 8 - 4,),
+            shape=(num_rod_state * 3 + 11,),
             dtype=np.float64,
         )
 
@@ -480,35 +477,10 @@ class Environment(gym.Env):
                 WallBoundaryForSphere, boundaries=self.boundaries
             )
 
-
-        class FixNPoints(FreeRod):
-            def __init__(self, rod, num_nodes):
-                FreeRod.__init__(self)
-
-                self.num_nodes = num_nodes
-                # store the initial position of the nodes and directors that need to be fixedZ
-                self.fixed_positions_all = rod.position_collection[..., 0:self.num_nodes]
-                self.fixed_directors_all = rod.director_collection[..., 0:self.num_nodes]
-
-            def constrain_values(self, rod, time):
-                rod.position_collection[..., 0:self.num_nodes] = self.fixed_positions_all
-                rod.director_collection[..., 0:self.num_nodes] = self.fixed_directors_all
-
-            def constrain_rates(self, rod, time):
-                rod.velocity_collection[..., 0:self.num_nodes] = 0.0
-                rod.omega_collection[..., 0:self.num_nodes] = 0.0
-
         # Add boundary constraints as fixing one end
-        n_trained_elem = 20
-        num_initial_nodes_to_fix = int(round(self.n_elem/n_trained_elem))
-        print('fixing ', num_initial_nodes_to_fix, 'nodes')
         self.simulator.constrain(self.shearable_rod).using(
-            FixNPoints, num_nodes=num_initial_nodes_to_fix, rod = self.shearable_rod
+            OneEndFixedRod, constrained_position_idx=(0,), constrained_director_idx=(0,)
         )
-        
-        # self.simulator.constrain(self.shearable_rod).using(
-        #     OneEndFixedRod, constrained_position_idx=(0,), constrained_director_idx=(0,)
-        # )
 
         # Add muscle torques acting on the arm for actuation
         # MuscleTorquesWithVaryingBetaSplines uses the control points selected by RL to
@@ -719,8 +691,8 @@ class Environment(gym.Env):
                 rod_compact_velocity_dir,
                 # target information
                 sphere_compact_state,
-                # sphere_compact_velocity_norm,
-                # sphere_compact_velocity_dir,
+                sphere_compact_velocity_norm,
+                sphere_compact_velocity_dir,
             )
         )
 
@@ -899,7 +871,7 @@ class Environment(gym.Env):
             self.shearable_rod.position_collection = np.zeros(
                 self.shearable_rod.position_collection.shape
             )
-            reward = -10000
+            reward = -1000
             state = self.get_state()
             done = True
 
@@ -977,15 +949,15 @@ class Environment(gym.Env):
                 **kwargs,
             )
 
-            # plot_video_with_sphere(
-            #     [self.post_processing_dict_rod],
-            #     [self.post_processing_dict_sphere],
-            #     video_name="3d_" + filename_video,
-            #     fps=self.rendering_fps,
-            #     step=1,
-            #     vis2D=False,
-            #     **kwargs,
-            # )
+            plot_video_with_sphere(
+                [self.post_processing_dict_rod],
+                [self.post_processing_dict_sphere],
+                video_name="3d_" + filename_video,
+                fps=self.rendering_fps,
+                step=1,
+                vis2D=False,
+                **kwargs,
+            )
 
             if SAVE_DATA == True:
                 import os

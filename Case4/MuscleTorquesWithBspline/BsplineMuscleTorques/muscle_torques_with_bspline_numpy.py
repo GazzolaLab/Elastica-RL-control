@@ -106,13 +106,9 @@ class MuscleTorquesWithVaryingBetaSplines(NoForces):
         self.points_cached = np.zeros(
             (2, self.number_of_control_points + 2)
         )  # This caches the control points. Note that first and last control points are zero.
-        # Manually set up the control point locations. Control points in the middle set at 40 and 90 % of the arm.
-        self.points_cached[0, :] = (
-            np.array([0.0, 0.4, 0.9, 1.0]) * self.base_length
+        self.points_cached[0, :] = np.linspace(
+            0, self.base_length, self.number_of_control_points + 2
         )  # position of control points along the rod.
-        self.points_cached[1, 1:-1] = np.random.randn(
-            self.number_of_control_points
-        )  # Initialize at a value that RL can not match
 
         # Max rate of change of activation determines, maximum change in activation
         # signal in one time-step.
@@ -142,6 +138,7 @@ class MuscleTorquesWithVaryingBetaSplines(NoForces):
                 self.max_rate_of_change_of_activation,
             )
 
+            # self.points_cached[1, 1:-1] = self.points_array(time)
             self.my_spline = make_interp_spline(
                 self.points_cached[0], self.points_cached[1]
             )

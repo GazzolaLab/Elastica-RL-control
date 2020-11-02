@@ -10,8 +10,6 @@ from gym import spaces
 import copy
 import sys
 
-sys.path.append("../")
-
 from post_processing import plot_video_with_sphere, plot_video_with_sphere_2D
 
 from MuscleTorquesWithBspline.BsplineMuscleTorques import (

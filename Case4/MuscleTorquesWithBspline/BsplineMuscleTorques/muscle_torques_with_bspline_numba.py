@@ -51,7 +51,7 @@ class MuscleTorquesWithVaryingBetaSplines(NoForces):
         muscle_torque_scale,
         direction,
         step_skip,
-        max_rate_of_change_of_control_points=0.01,
+        max_rate_of_change_of_activation=0.01,
         **kwargs,
     ):
         """
@@ -108,17 +108,16 @@ class MuscleTorquesWithVaryingBetaSplines(NoForces):
         self.points_cached = np.zeros(
             (2, self.number_of_control_points + 2)
         )  # This caches the control points. Note that first and last control points are zero.
-        # Manually set up the control point locations. Control points in the middle set at 40 and 90 % of the arm.
-        self.points_cached[0, :] = (
-            np.array([0.0, 0.4, 0.9, 1.0]) * self.base_length
+        self.points_cached[0, :] = np.linspace(
+            0, self.base_length, self.number_of_control_points + 2
         )  # position of control points along the rod.
         self.points_cached[1, 1:-1] = np.zeros(
             self.number_of_control_points
-        )  # initialize at a value that RL can not match
+        )  # initalize at a value that RL can not match
 
-        # Max rate of change of control points determines, maximum change in value of control points
-        # in one time-step.
-        self.max_rate_of_change_of_control_points = max_rate_of_change_of_control_points
+        # Max rate of change of activation determines, maximum change in activation
+        # signal in one time-step.
+        self.max_rate_of_change_of_activation = max_rate_of_change_of_activation
 
         # Purpose of this flag is to just generate spline even the control points are zero
         # so that code wont crash.
@@ -131,6 +130,8 @@ class MuscleTorquesWithVaryingBetaSplines(NoForces):
         # spline every time step.
         # Make sure that first and last point y values are zero. Because we cannot generate a
         # torque at first and last nodes.
+        # print('torque',self.max_rate_of_change_of_activation)
+
         if (
             not np.array_equal(self.points_cached[1, 1:-1], self.points_array(time))
             or self.initial_call_flag == 0

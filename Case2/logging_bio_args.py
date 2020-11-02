@@ -4,17 +4,9 @@ import os
 import numpy as np
 import sys
 
-sys.path.append("../")
-
 import argparse
-
-# Import matplotlib
 import matplotlib
-
-matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-
-plt.rcParams["animation.ffmpeg_path"] = "/usr/local/bin/ffmpeg"
 
 # Import stable baseline
 from stable_baselines.bench.monitor import Monitor, load_results
@@ -77,7 +69,7 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    "--timesteps_per_batch", type=int, default=2048 * 2,
+    "--timesteps_per_batch", type=int, default=8000,
 )
 
 parser.add_argument(

@@ -4,16 +4,9 @@ import os
 import numpy as np
 import sys
 
-sys.path.append("../")
-
 import argparse
-
 import matplotlib
-
-matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-
-plt.rcParams["animation.ffmpeg_path"] = "/usr/local/bin/ffmpeg"
 
 # Import stable baseline
 from stable_baselines.bench.monitor import Monitor, load_results
@@ -68,7 +61,7 @@ parser = argparse.ArgumentParser()
 
 ########### training and data info ###########
 parser.add_argument(
-    "--total_timesteps", type=float, default=4e5,
+    "--total_timesteps", type=float, default=1e6,
 )
 
 parser.add_argument(
@@ -76,7 +69,7 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    "--timesteps_per_batch", type=int, default=500,
+    "--timesteps_per_batch", type=int, default=8000,
 )
 
 parser.add_argument(
@@ -84,8 +77,6 @@ parser.add_argument(
 )
 
 args = parser.parse_args()
-
-args.algo_name = "PPO"
 
 if args.algo_name == "TRPO":
     MLP = MlpPolicy
@@ -114,25 +105,21 @@ elif args.algo_name == "SAC":
     offpolicy = True
 
 # Mode 4 corresponds to randomly moving target
-args.mode = 1
+args.mode = 4
 
 # Set simulation final time
-final_time = 1.0
+final_time = 10
 # Number of control points
-number_of_control_points = 1
+number_of_control_points = 6
 # target position
-target_position = [-0.4, 0.6, 0.0]
-
+target_position = [-0.4, 0.6, 0.2]
+# learning step skip
+num_steps_per_update = 7
 # alpha and beta spline scaling factors in normal/binormal and tangent directions respectively
 args.alpha = 75
 args.beta = 75
 
-# learning step skip
-scale_value = 1
-num_steps_per_update = 10 * scale_value
-sim_dt = 2.0e-4 / scale_value
-n_elem = 20 * scale_value
-args.total_timesteps = 1e5
+sim_dt = 2.0e-4
 
 max_rate_of_change_of_activation = np.infty
 print("rate of change", max_rate_of_change_of_activation)
@@ -153,16 +140,14 @@ env = Environment(
     boundary=[-0.6, 0.6, 0.3, 0.9, -0.6, 0.6],
     E=1e7,
     sim_dt=sim_dt,
-    n_elem=n_elem,
+    n_elem=20,
     NU=30,
     num_obstacles=0,
-    dim=2.0,
+    dim=3.0,
     max_rate_of_change_of_activation=max_rate_of_change_of_activation,
 )
 
-print(20 * scale_value, sim_dt, 7 * scale_value)
-
-name = str(args.algo_name) + "_2d-1pt-fixed_"+str(n_elem) + "_"
+name = str(args.algo_name) + "_3d-tracking_id"
 identifer = name + "-" + str(args.timesteps_per_batch) + "_" + str(args.SEED)
 
 
