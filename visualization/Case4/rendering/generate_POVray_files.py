@@ -6,6 +6,10 @@ import matplotlib.pyplot as plt
 from matplotlib import colors as mcolors
 colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
 
+# Initialize directory
+if not os.path.exists("./images"):
+    os.makedirs("./images")
+
 # Load elastic arm data
 arm_and_target_data = np.load("../data/arm_data.npz")
 arm_position = arm_and_target_data["position_rod"]

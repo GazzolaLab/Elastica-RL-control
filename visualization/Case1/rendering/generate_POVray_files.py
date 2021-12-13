@@ -3,7 +3,11 @@ import matplotlib.pyplot as plt
 import os
 
 two_arm_pos=np.load("../data/arm_data.npz")
-dir_id = "./images"
+
+# Initialize directory
+if not os.path.exists("./images"):
+    os.makedirs("./images")
+
 position_rod1 = two_arm_pos["position_rod"]
 radius_rod1 = two_arm_pos["radii_rod"]
 n_elems_rod1 = two_arm_pos["n_elems_rod"]
@@ -18,7 +22,7 @@ time_inc=0.1#int(pos.shape[0]/5)
 time = position_rod1.shape[0]
 
 for k in range(time):
-    file1 = open("%s/moving_arm%02d.inc" % (dir_id, k),"w")
+    file1 = open("images/moving_arm%02d.inc"%k,"w")
 
     # Arm
     file1.writelines("sphere_sweep\n{b_spline %d"% int(n_elems_rod1))
@@ -53,7 +57,7 @@ for k in range(time):
     file1.writelines("scale<4,4,4> rotate<0,90,90> translate<2,0,4>    }\n")
     file1.close()
 
-    file2 = open("%s/moving_arm%02d.pov" % (dir_id, k) ,"w")
+    file2 = open("images/moving_arm%02d.pov"%k,"w")
     file2.writelines("#include \"../camera_position.inc\"\n")
     file2.writelines("#include \"moving_arm%02d.inc\"\n"%k)
     file2.close()
