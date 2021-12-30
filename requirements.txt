@@ -1,3 +1,2 @@
 pyelastica >= 0.1.0.post5
-numba
 stable-baselines
