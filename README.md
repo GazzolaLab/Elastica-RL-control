@@ -1,5 +1,7 @@
 ## Elastica + RL benchmark cases
 
+(EDIT 1/17/22: This branch is an archive of the original code used in the paper. Recent changes to PyElastica's file strucutre require changing some import calls which we are implmenting on the main branch. These changes should not effect any results or performance.) 
+
 This repo provides supplementary code and benchmark data for the paper: [*Elastica: A compliant mechanics environment for soft robotic control*](https://ieeexplore.ieee.org/document/9369003), in IEEE Robotics and Automation Letters.
 
 [Elastica](https://github.com/GazzolaLab/PyElastica) is a simulation environment for simulating assemblies of one-dimensional soft, slender structures using Cosserat rod theory. More information about Elastica is available on the [project website](https://cosseratrods.org). You can install the Python version of Elastica via `pip install pyelastica.` 
