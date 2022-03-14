@@ -107,13 +107,13 @@ We ask that any publications which use these benchmark cases cite the original p
 Naughton, Sun, Tekinalp, Parthasarathy, Chowdhary and Gazzola, <strong>Elastica: A compliant mechanics environment for soft robotic control</strong>, IEEE Robotics and Automation Letters, 2021. doi: [10.1109/LRA.2021.3063698](https://doi.org/10.1109/LRA.2021.3063698)
 ```
 @article{Naughton2021,
-  author={Naughton, N and Sun, J and Tekinalp, A and Parthasarathy, T and Chowdhary, G and Gazzola, M},
+  author={Naughton, Noel and Sun, Jiarui and Tekinalp, Arman and Parthasarathy, Tejaswin and Chowdhary, Girish and Gazzola, Mattia},
   journal={IEEE Robotics and Automation Letters}, 
   title={Elastica: A compliant mechanics environment for soft robotic control}, 
   year={2021},
-  volume={},
-  number={},
-  pages={1-1},
+  volume={6},
+  number={2},
+  pages={3389-3396},
   doi={10.1109/LRA.2021.3063698}
 }
 ```
